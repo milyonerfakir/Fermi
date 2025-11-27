@@ -11,6 +11,9 @@ EXPOSE 8080
 WORKDIR /exec
 RUN apk add --update nodejs npm
 COPY --from=builder /devel/ . 
+RUN adduser -D jankclient
+
+# ⭐ Eklenen güvenli satır — yazma iznini bu veriyor
 RUN chown -R jankclient:jankclient /exec
 
 USER jankclient
