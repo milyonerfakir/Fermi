@@ -1,27 +1,213 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Fermi</title>
-		<meta content="Fermi" property="og:title" />
-		<meta content="Join a community of people and start chatting!" property="og:description" />
-		<meta content="/logo.webp" property="og:image" />
-		<meta content="#4b458c" name="theme-color" />
-		<link href="/style.css" rel="stylesheet" />
-		<link href="/themes.css" rel="stylesheet" id="lightcss" />
-		<style>
-			body.no-theme {
-				background: #16191b;
-			}
-			@media (prefers-color-scheme: light) {
-				body.no-theme {
-					background: #9397bd;
-				}
-			}
-		</style>
-	</head>
-	<body class="no-theme">
-		<script src="/recover.js" type="module"></script>
-	</body>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Şifre Sıfırlama - Etiklife</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(145deg, #2a2e65, #8030a0);
+        overflow: hidden;
+        color: #fff;
+    }
+
+    body::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top left, rgba(255,255,255,0.15), transparent 60%),
+                    radial-gradient(circle at bottom right, rgba(0,0,0,0.35), transparent 60%);
+        filter: blur(120px);
+        z-index: -1;
+    }
+
+    .glass-card {
+        width: 450px;
+        padding: 40px;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        text-align: center;
+        animation: fade 0.6s ease;
+    }
+
+    @keyframes fade {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+        width: 100px;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-size: 23px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .input {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        background: rgba(255,255,255,0.20);
+        color: #fff;
+    }
+    .input::placeholder {
+        color: #e0e0ff;
+    }
+
+    .button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 13px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(90deg,#5d7bff,#8d44ff);
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        transition: 0.25s;
+        box-shadow: 0 0 12px rgba(120,90,255,0.5);
+    }
+    .button:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 20px rgba(140,110,255,0.7);
+    }
+</style>
+
+</head>
+
+<body>
+
+<div id="reset-container" class="glass-card">
+    <img src="https://www.etiklife.com/images/logo/4045512544314-502-b%C3%BCy%C3%BCk%20arkaplans%C4%B1z.png" class="logo">
+
+    <h2 id="title">Şifre Sıfırlama</h2>
+    
+    <div id="step1">
+        <input id="email" class="input" placeholder="E-posta adresiniz">
+        <button class="button" onclick="sendReset()">Sıfırlama Bağlantısı Gönder</button>
+    </div>
+
+    <div id="step2" style="display:none;">
+        <input id="token" class="input" placeholder="E-posta ile gelen kod">
+        <input id="pass1" type="password" class="input" placeholder="Yeni Şifre">
+        <input id="pass2" type="password" class="input" placeholder="Yeni Şifre (Tekrar)">
+        <button class="button" onclick="resetPassword()">Şifreyi Güncelle</button>
+    </div>
+
+    <div id="captcha-area" style="margin-top:20px;"></div>
+</div>
+
+<script type="module">
+import {I18n} from "/i18n.js";
+import {Dialog, FormError} from "/settings.js";
+
+await I18n.done;
+
+const info = JSON.parse(localStorage.getItem("instanceinfo") || "{}");
+
+const emailField = document.getElementById("email");
+const tokenField = document.getElementById("token");
+const pass1 = document.getElementById("pass1");
+const pass2 = document.getElementById("pass2");
+
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+
+let captchaContainer = document.getElementById("captcha-area");
+let captchaLoaded = false;
+
+// === ADIM 1 → Şifre sıfırlama maili gönder ===
+async function sendReset() {
+    const email = emailField.value.trim();
+    if (!email) return alert("Lütfen e-posta adresinizi girin.");
+
+    const res = await fetch(info.api + "/auth/forgot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ login: email })
+    });
+
+    const data = await res.json();
+
+    if (data.captcha_sitekey) {
+        if (!captchaLoaded) {
+            captchaLoaded = true;
+
+            const capty = document.createElement("div");
+            capty.classList.add("h-captcha");
+            capty.setAttribute("data-sitekey", data.captcha_sitekey);
+
+            const script = document.createElement("script");
+            script.src = "https://js.hcaptcha.com/1/api.js";
+
+            captchaContainer.append(script);
+            captchaContainer.append(capty);
+        }
+        return;
+    }
+
+    if (Object.keys(data).length === 0) {
+        step1.style.display = "none";
+        step2.style.display = "block";
+    }
+}
+
+// === ADIM 2 → Yeni şifre belirleme ===
+async function resetPassword() {
+    const p1 = pass1.value.trim();
+    const p2 = pass2.value.trim();
+    let token = tokenField.value.trim();
+
+    if (p1 !== p2) return alert("Şifreler eşleşmiyor!");
+
+    if (!token && window.location.href.includes("#")) {
+        const hash = window.location.href.split("#")[1];
+        token = new URLSearchParams(hash).get("token");
+    }
+
+    const res = await fetch(info.api + "/auth/reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: p1, token })
+    });
+
+    const data = await res.json();
+
+    if (data.token) {
+        alert("Şifreniz başarıyla güncellendi!");
+        window.location.href = "/login";
+    }
+    else alert("Hata oluştu. Token geçersiz olabilir.");
+}
+
+// TOKEN URL'si ile gelindiyse direkt adım 2 açılır
+if (
+    window.location.href.split("#").length === 2 &&
+    new URLSearchParams(window.location.href.split("#")[1]).has("token")
+) {
+    step1.style.display = "none";
+    step2.style.display = "block";
+}
+</script>
+
+</body>
 </html>
