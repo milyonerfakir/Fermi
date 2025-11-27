@@ -1,109 +1,249 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Fermi: A Spacebar Client</title>
-		<meta content="Fermi" property="og:title" />
-		<meta content="Join a community of people and start chatting!" property="og:description" />
-		<meta content="Join a community of people and start chatting!" name="description" />
-		<meta content="/logo.webp" property="og:image" />
-		<meta content="#4b458c" name="theme-color" />
-		<link href="/style.css" rel="stylesheet" />
-		<link href="/themes.css" rel="stylesheet" id="lightcss" />
-		<style>
-			body.no-theme {
-				background: #16191b;
-			}
-			@media (prefers-color-scheme: light) {
-				body.no-theme {
-					background: #9397bd;
-				}
-			}
-		</style>
-	</head>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Etiklife Kurumsal Sohbet</title>
 
-	<body class="no-theme" style="overflow-y: scroll">
-		<div id="titleDiv">
-			<img src="/logo.svg" width="40" alt="Fermi icon" />
-			<h2 id="pageTitle">Fermi</h2>
-			<a href="/invite/USgYJo?instance=https%3A%2F%2Fspacebar.chat" class="TitleButtons">
-				Spacebar Guild
-			</a>
-			<a href="https://github.com/MathMan05/Fermi" class="TitleButtons"> Github </a>
-			<a href="/channels/@me" class="TitleButtons" id="openClient" i18n="htmlPages.openClient">
-				Open Client
-			</a>
-		</div>
-		<div id="homePage">
-			<h1 class="pagehead" id="welcomeJank" i18n="htmlPages.welcomeJank">Welcome to Fermi</h1>
-			<div class="pagebox" id="ScreenshotSlides">
-				<span class="rightArrow svg-intoMenu"></span>
-				<span class="leftArrow svg-leftArrow"></span>
-				<img src="./home/SS1.webp" class="screenshots" />
-				<img src="./home/SS2.webp" class="screenshots hidden" />
-				<img src="./home/SS3.webp" class="screenshots hidden" />
-				<div id="slideCount"></div>
-			</div>
-			<div class="pagebox">
-				<h2 id="compatableInstances" i18n="htmlPages.compatableInstances">
-					Spacebar-Compatible Instances:
-				</h2>
-				<div id="instancebox"></div>
-			</div>
-			<div class="pagebox">
-				<p id="box1title" i18n="htmlPages.box1title">
-					Fermi is a Spacebar-compatible client seeking to be as good as it can be with many
-					features including:
-				</p>
-				<ul id="box1Items">
-					<li>Direct Messaging</li>
-					<li>Reactions support</li>
-					<li>Invites</li>
-					<li>Account switching</li>
-					<li>User settings</li>
-					<li>Developer portal</li>
-					<li>Bot invites</li>
-					<li>Translation support</li>
-				</ul>
-			</div>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 
-			<div class="pagebox">
-				<h2 id="box5title" i18n="blog.fermi">Fermi Blog</h2>
-				<p id="box5description" i18n="blog.desc">
-					Read or subscribe to the blog for updates on Fermi!
-				</p>
-				<br />
-				<a href="https://blog.fermi.chat" class="TitleButtons" id="blog" i18n="blog.blog"> Blog </a>
-				<div id="recentBlog" class="flexttb"></div>
-			</div>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: url("BACKGROUND_URL_BURAYA") center/cover no-repeat fixed,
+                        linear-gradient(135deg, #7e88d6, #2f3245);
+            backdrop-filter: blur(5px);
+            color: white;
+            overflow-x: hidden;
+        }
 
-			<div class="pagebox">
-				<h2 id="box4title" i18n="htmlPages.transTitle">Translate Fermi</h2>
-				<p id="box4description" i18n="htmlPages.transDesc">
-					You can help translate Fermi into your own language!
-				</p>
-				<br />
-				<a
-					href="https://translatewiki.net/wiki/Translating:Fermi"
-					class="TitleButtons"
-					id="translate"
-					i18n="htmlPages.trans"
-				>
-					Translate
-				</a>
-			</div>
+        /* Su dalgası efekti */
+        .water-effect {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 70%);
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            transition: opacity 0.3s, transform 0.3s;
+        }
 
-			<div class="pagebox">
-				<h2 id="box3title" i18n="htmlPages.box3title">Contribute to Fermi</h2>
-				<p id="box3description" i18n="htmlPages.box3description">
-					We always appreciate some help, whether that be in the form of bug reports, code, help
-					translate, or even just pointing out some typos.
-				</p>
-				<br />
-				<a href="https://github.com/MathMan05/Fermi" class="TitleButtons"> Github </a>
-			</div>
-		</div>
-	</body>
-	<script src="/home.js" type="module"></script>
+        /* Sayfa geniş container */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.10);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.35);
+            transform: scale(1.05);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        /* SSS bölümü */
+        details {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+        summary {
+            font-weight: bold;
+            font-size: 18px;
+            outline: none;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Su efekti -->
+    <div class="water-effect" id="water"></div>
+
+    <div class="container">
+
+        <!-- LOGO -->
+        <img src="https://www.etiklife.com/images/logo/4045512544314-502-b%C3%BCy%C3%BCk%20arkaplans%C4%B1z.png" class="logo" alt="Etiklife Logo">
+
+        <h1>Etiklife Kurumsal Sohbet Uygulamasına Hoş Geldiniz</h1>
+
+        <!-- Uygulamaya Git -->
+        <button class="btn" onclick="location.href='https://chat.etiklife.com/login'">
+            Uygulamaya Git
+        </button>
+
+        <!-- Özellikler -->
+        <div class="glass-box">
+            <h2>Uygulama Özellikleri</h2>
+
+            <div class="features">
+
+                <div class="feature-card">
+                    <h3>📩 Özel Mesajlaşma</h3>
+                    Güvenli birebir iletişim, medya gönderme, okunma durumu.
+                </div>
+
+                <div class="feature-card">
+                    <h3>💬 Kanal Tabanlı Grup Sohbeti</h3>
+                    Departmanlara özel sohbet odaları.
+                </div>
+
+                <div class="feature-card">
+                    <h3>📁 Dosya Paylaşımı</h3>
+                    PDF, resim, belge, ses dosyaları gönderme.
+                </div>
+
+                <div class="feature-card">
+                    <h3>🔔 Bildirim Sistemi</h3>
+                    Masaüstü & mobil bildirim destekli.
+                </div>
+
+                <div class="feature-card">
+                    <h3>👥 Kullanıcı Yetkileri</h3>
+                    Rol yönetimi, admin seçenekleri.
+                </div>
+
+                <div class="feature-card">
+                    <h3>🌙 Tema Desteği</h3>
+                    Karanlık / Aydınlık mod.
+                </div>
+
+                <div class="feature-card">
+                    <h3>🛡️ Kurumsal Güvenlik</h3>
+                    SSL, güvenli API, erişim kontrolü.
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SSS -->
+        <div class="glass-box">
+            <h2>Sıkça Sorulan Sorular</h2>
+
+            <details>
+                <summary>Uygulamaya nasıl giriş yaparım?</summary>
+                Etiklife hesap bilgilerinizle giriş yapabilir veya yeni bir hesap oluşturabilirsiniz.
+            </details>
+
+            <details>
+                <summary>Mesajlar güvenli mi?</summary>
+                Mesajlar SSL üzerinden iletilir ve güvenli protokoller kullanılır.
+            </details>
+
+            <details>
+                <summary>Dosya yükleme limiti nedir?</summary>
+                Varsayılan limit 25MB’dır. Kuruma özel arttırılabilir.
+            </details>
+
+            <details>
+                <summary>Admin paneline nasıl ulaşırım?</summary>
+                Eğer admin yetkiniz varsa aşağıdaki bağlantıyı kullanabilirsiniz.
+            </details>
+
+            <p style="margin-top:15px;">
+                <a href="/home">Yönetici olarak devam etmek için uygulamaya giriş yapın.</a>
+            </p>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            © 2025 Etiklife — Tüm Hakları Saklıdır<br>
+            Hazırlayan: <b>Ali Ustaoğlu</b>
+        </footer>
+
+    </div>
+
+<script>
+    // Su dalgası efekti
+    const water = document.getElementById("water");
+
+    document.addEventListener("mousemove", (e) => {
+        water.style.left = e.clientX + "px";
+        water.style.top = e.clientY + "px";
+        water.style.opacity = 1;
+        water.style.transform = "translate(-50%, -50%) scale(1)";
+        clearTimeout(window.waterTimeout);
+
+        window.waterTimeout = setTimeout(() => {
+            water.style.opacity = 0;
+            water.style.transform = "translate(-50%, -50%) scale(0.5)";
+        }, 300);
+    });
+</script>
+
+</body>
 </html>
