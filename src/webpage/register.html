@@ -1,27 +1,149 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Fermi</title>
-		<meta content="Fermi" property="og:title" />
-		<meta content="Join a community of people and start chatting!" property="og:description" />
-		<meta content="/logo.webp" property="og:image" />
-		<meta content="#4b458c" name="theme-color" />
-		<link href="/style.css" rel="stylesheet" />
-		<link href="/themes.css" rel="stylesheet" id="lightcss" />
-		<style>
-			body.no-theme {
-				background: #16191b;
-			}
-			@media (prefers-color-scheme: light) {
-				body.no-theme {
-					background: #9397bd;
-				}
-			}
-		</style>
-	</head>
-	<body class="no-theme">
-		<script src="/register.js" type="module"></script>
-	</body>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Etiklife Kurumsal Sohbet - Kayıt Ol</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #dfe9f3, #ffffff);
+        overflow: hidden;
+    }
+
+    .glass-card {
+        width: 420px;
+        padding: 40px;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        text-align: center;
+        animation: fade 0.6s ease;
+    }
+
+    @keyframes fade {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+        width: 120px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .input {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        background: rgba(255,255,255,0.55);
+    }
+
+    .button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 13px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        background: #4c73ff;
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .button:hover {
+        background: #2c52e6;
+        transform: scale(1.02);
+    }
+
+    a {
+        margin-top: 15px;
+        display: block;
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="glass-card">
+    <img src="LOGO_URL" class="logo" alt="Etiklife Logo">
+
+    <h2>Yeni Hesap Oluştur</h2>
+
+    <input id="email" class="input" placeholder="E-posta adresi">
+    <input id="username" class="input" placeholder="Kullanıcı adı">
+    <input id="password" type="password" class="input" placeholder="Parola">
+    <input id="password2" type="password" class="input" placeholder="Parola tekrar">
+
+    <button class="button" onclick="registerUser()">Hesap Oluştur</button>
+
+    <a href="/login">Zaten hesabım var → Giriş Yap</a>
+</div>
+
+<script>
+async function registerUser() {
+    const email = document.getElementById("email").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const pass2 = document.getElementById("password2").value.trim();
+
+    if (!email || !username || !pass || !pass2) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
+    if (pass !== pass2) {
+        alert("Parolalar eşleşmiyor!");
+        return;
+    }
+
+    const instance = JSON.parse(localStorage.getItem("instanceinfo") || "{}");
+
+    const registerURL = (instance.api || "https://chat.etiklife.com/api") + "/auth/register";
+
+    const response = await fetch(registerURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: email,
+            username: username,
+            password: pass
+        })
+    });
+
+    const data = await response.json();
+
+    if (data.token) {
+        alert("Hesap oluşturuldu! Giriş ekranına yönlendiriliyorsunuz…");
+        window.location.href = "/login";
+    } else {
+        alert("Kayıt başarısız: " + (data.message || "Bilinmeyen hata"));
+    }
+}
+</script>
+
+</body>
 </html>
