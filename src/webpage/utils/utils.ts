@@ -24,13 +24,26 @@ let instances:
 	| null = null;
 setTheme();
 export function setTheme() {
+	const allowedThemes = [
+		"Dark",
+		"WHITE",
+		"Light",
+		"Dark-Accent",
+		"Etiklife"   // ⭐ bizim yeni temamız
+	];
+
 	let name = localStorage.getItem("theme");
-	if (!name) {
-		localStorage.setItem("theme", "Dark");
-		name = "Dark";
+
+	// İlk girişte default tema
+	if (!name || !allowedThemes.includes(name)) {
+		name = "Etiklife";
+		localStorage.setItem("theme", name);
 	}
+
+	// Body’ye class ekle
 	document.body.className = name + "-theme";
 }
+
 export function getBulkUsers() {
 	const json = getBulkInfo();
 	for (const thing in json.users) {
