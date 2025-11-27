@@ -126,6 +126,8 @@
 	--spoiler-bg: #000000;
 }
 
+
+
 /* Optional Variables */
 body {
 	--primary-text-prominent: var(--primary-text);
@@ -181,3 +183,58 @@ body {
 	--loading-bg: var(--secondary-bg);
 	--loading-text: var(--secondary-text);
 }
+
+
+
+/* =========================
+   Etiklife Glass Modern Theme
+   ========================= */
+
+.Etiklife-theme {
+	color-scheme: dark;
+
+	/* Arka plan genel */
+	--primary-bg: rgba(25, 25, 40, 0.45);
+	--primary-hover: rgba(255, 255, 255, 0.07);
+
+	/* Mor-Pembe Gradient */
+	--secondary-bg: linear-gradient(135deg, #6a40ff44, #ff3dbb33);
+	--secondary-hover: rgba(255, 255, 255, 0.05);
+
+	/* Sidebar renkleri */
+	--servers-bg: rgba(15, 15, 30, 0.35);
+	--channels-bg: rgba(30, 30, 55, 0.38);
+	--channel-selected: rgba(255, 255, 255, 0.12);
+
+	/* Yazılar */
+	--primary-text: #ffffffee;
+	--primary-text-soft: #cfd2ff;
+
+	/* Kanallar */
+	--secondary-text: #c7c7d7;
+	--secondary-text-soft: #9da1bb;
+
+	/* Mesaj kutusu */
+	--typebox-bg: rgba(255, 255, 255, 0.06);
+
+	/* Butonlar */
+	--button-bg: rgba(255, 255, 255, 0.13);
+	--button-hover: rgba(255, 255, 255, 0.22);
+
+	/* Link renkleri */
+	--link: #b9c7ff;
+
+	/* Kartlar & paneller */
+	--card-bg: rgba(40, 40, 60, 0.45);
+	--settings-bg: rgba(40, 40, 60, 0.45);
+
+	/* Kullanıcı paneli */
+	--dock-bg: rgba(20, 20, 35, 0.42);
+
+	/* Mesaj hover */
+	--spoiler-bg: rgba(255,255,255,0.08);
+
+	/* Cam efekti */
+	--glass-blur: saturate(180%) blur(18px);
+}
+
