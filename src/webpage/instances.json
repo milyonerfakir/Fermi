@@ -1,7 +1,7 @@
 [
   {
     "name": "Etiklife",
-    "description": "The official Etiklife chat instance.",
+    "description": "Etiklife Spacebar Sunucusu",
     "image": "https://chat.etiklife.com/logo.png",
     "urls": {
       "wellknown": "https://chat.etiklife.com",
@@ -9,6 +9,7 @@
       "cdn": "https://chat.etiklife.com/cdn",
       "gateway": "wss://chat.etiklife.com/gateway"
     },
-    "url": "https://chat.etiklife.com"
+    "url": "https://chat.etiklife.com",
+    "display": true
   }
 ]
