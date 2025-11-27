@@ -1,7 +1,7 @@
 [
   {
     "name": "Etiklife",
-    "description": "Etiklife Spacebar Sunucusu",
+    "description": "Etiklife Kurumsal Sohbet Sunucusu",
     "image": "https://chat.etiklife.com/logo.png",
     "urls": {
       "wellknown": "https://chat.etiklife.com",
@@ -10,6 +10,23 @@
       "gateway": "wss://chat.etiklife.com/gateway"
     },
     "url": "https://chat.etiklife.com",
-    "display": true
-  }
-]
+    "display": true,
+    "online": true,
+    "uptime": {
+      "daytime": null,
+      "weektime": null,
+      "alltime": null
+    }
+  },
+  {
+    "name": "Spacebar",
+    "url": "https://spacebar.chat",
+    "description": "The official Spacebar instance.",
+    "image": "https://raw.githubusercontent.com/spacebarchat/spacebarchat/master/branding/png/Spacebar__Icon-Discord.png",
+    "display": false
+  },
+  {
+    "name": "Fastbar",
+    "url": "https://greysilly7.xyz",
+    "description": "The best Spacebar instance with 95% uptime.",
+    "image": "https://spacebar.greysilly7
