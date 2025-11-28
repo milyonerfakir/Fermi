@@ -2180,7 +2180,7 @@ class Localuser {
 		{
 			const tas = settings.addButton(I18n.localuser.themesAndSounds());
 			{
-				const themes = ["Light", "Dark", "WHITE", "Light", "Dark-Accent"];
+				const themes = ["Etiklife", "Dark", "WHITE", "Light", "Dark-Accent"];
 				tas.addSelect(
 					I18n.localuser["theme:"](),
 					(_) => {
